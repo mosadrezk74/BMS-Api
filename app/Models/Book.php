@@ -18,12 +18,17 @@ class Book extends Model
         'author_id',
         'pages',
         'rating',
+        'price',
 
     ];
 
-    public function authors()
+    public function author()
     {
-        return $this->belongsToMany(Author::class, 'm_n_m', 'book_id', 'author_id');
+        return $this->belongsTo(Author::class);
+    }
+    public function category(){
+
+        return $this->belongsTo(Category::class);
     }
 
 

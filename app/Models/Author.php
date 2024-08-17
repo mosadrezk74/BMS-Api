@@ -9,10 +9,11 @@ class Author extends Model
 {
     public $timestamps = false;
     protected $fillable = ['name'];
+    protected $table = 'author';
 
     public function books()
     {
-        return $this->belongsToMany(Book::class, 'm_n_m', 'author_id', 'book_id');
+        return $this->belongsTo(Book::class);
     }
     use HasFactory;
 }
