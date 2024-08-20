@@ -3,8 +3,10 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthStc;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CatAndAuthorStc;
+use App\Http\Controllers\Api\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +58,21 @@ Route::post('logout',[AuthStc::class,'logout'])
     });
 
     Route::get('/books/search', [BookController::class, 'search']);
+    ###############################################################################################
+    Route::post('/checkout', [OrderController::class, 'checkout']);
+    Route::get('/orders/history', [OrderController::class, 'orderHistory']);
+
+    Route::get('/orders', [OrderController::class, 'index']); // View All Orders
+    Route::put('/orders/{id}', [OrderController::class, 'updateOrderStatus']);
+    ###############################################################################################
+
+
+    Route::prefix('cart')->group(function () {
+        Route::post('/add', [CartController::class, 'addToCart']);
+        Route::get('/', [CartController::class, 'viewCart']);
+        Route::put('/update/{id}', [CartController::class, 'updateCart']);
+        Route::delete('/remove/{id}', [CartController::class, 'removeFromCart']);
+    });
 
 });
 

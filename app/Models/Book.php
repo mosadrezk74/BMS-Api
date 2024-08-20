@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Cart;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Book extends Model
@@ -31,7 +32,10 @@ class Book extends Model
         return $this->belongsTo(Category::class);
     }
 
-
+    public function cartItems()
+    {
+        return $this->hasMany(Cart::class);
+    }
     use HasFactory;
 }
 

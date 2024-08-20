@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthStc;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [Controller::class, 'index']);
+Route::get('/', [TestController::class, 'index']);

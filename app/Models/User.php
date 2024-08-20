@@ -48,4 +48,10 @@ class User extends Authenticatable
 
         return $user?->admin == 1;
     }
+
+
+    public function cartItems()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }
