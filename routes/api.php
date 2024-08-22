@@ -7,6 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CatAndAuthorStc;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +62,10 @@ Route::post('logout',[AuthStc::class,'logout'])
     ###############################################################################################
     Route::post('/checkout', [OrderController::class, 'checkout']);
     Route::get('/orders/history', [OrderController::class, 'orderHistory']);
-
+    ###############################################################################################
+    Route::post('/pay_checkout', [PaymentController::class, 'processPayment']);
+    Route::post('/payment/confirm', [PaymentController::class, 'confirmOrder']);
+    ###############################################################################################
     Route::get('/orders', [OrderController::class, 'index']); // View All Orders
     Route::put('/orders/{id}', [OrderController::class, 'updateOrderStatus']);
     ###############################################################################################

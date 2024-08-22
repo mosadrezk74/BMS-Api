@@ -1,35 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <style>
-        *{
-            background-color: black;
-            color: #ff9625;
-            font-family: 'Courier New', Courier, monospace;
-        }
-    </style>
+    <title>Stripe Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-    <center>
-    @foreach ($books as $bk)
-    {{-- <img src="{{ asset('storage/images'.$bk->image) }}" alt="{{ $bk->image }}"> --}}
-    <h3>{{$bk->name}}</h3>
-    <h3>{{$bk->price}}</h3>
+    <form id="payment-form">
+        <div id="card-element"></div>
+        <div id="card-errors" role="alert"></div>
+        <button id="submit-button">Pay</button>
+    </form>
 
-    @endforeach
-    <h5>#####################################################################################</h5>
-    @foreach ($carts as $cart )
-    <h5>{{$cart->user->name}}</h5>
-    <h5>{{$cart->book->name}}</h5>
-    <h5>{{$cart->quantity}}</h5>
-    @endforeach
+    <script>
+        var stripe = Stripe('pk_test_51PppbDRqLPXFsIvt2Sz2AtOv7yFfyYmZFgicYYKGtCsnXgIWnnChthOx7Lwsa4CMBhYZMxfZnH03VNOTLQC45vNS00Tc0p33sb');
+        var elements = stripe.elements();
+        var card = elements.create('card');
+        card.mount('#card-element');
 
+        card.on('change', function(event) {
+            var displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
 
-    </center>
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
 
+            stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    stripeTokenHandler(result.token);
+                }
+            });
+        });
+
+        function stripeTokenHandler(token) {
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeToken');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+            form.submit();
+        }
+    </script>
 </body>
 </html>
