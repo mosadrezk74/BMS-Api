@@ -21,7 +21,7 @@ class OrderConfirmationMail extends Mailable
 
     public function build()
     {
-        return $this->view('emails.order_confirmation')
+        return $this->view('order_confirmation')
                     ->with(['order' => $this->order]);
     }
 }

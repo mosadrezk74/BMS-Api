@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Cart;
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -36,6 +37,11 @@ class Book extends Model
     {
         return $this->hasMany(Cart::class);
     }
+    public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
+
     use HasFactory;
 }
 

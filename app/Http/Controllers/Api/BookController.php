@@ -60,6 +60,7 @@ class BookController extends Controller
         if (!$book) {
             return response()->json(['message' => 'Book Not Found'], 404);
         }
+        $averageRating = $book->reviews()->where('approved', true)->avg('rating');
 
         $responseData = [
             'id' => $book->id,
@@ -74,7 +75,7 @@ class BookController extends Controller
             ],
         ];
 
-        return response()->json($responseData);
+        return response()->json($responseData,$averageRating);
     }
 
     /**

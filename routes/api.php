@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthStc;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CatAndAuthorStc;
 use App\Http\Controllers\Api\OrderController;
@@ -77,6 +78,16 @@ Route::post('logout',[AuthStc::class,'logout'])
         Route::put('/update/{id}', [CartController::class, 'updateCart']);
         Route::delete('/remove/{id}', [CartController::class, 'removeFromCart']);
     });
+
+
+    Route::post('books/{book}/reviews', [ReviewController::class, 'store'])->middleware('auth');
+########################################################################################################################################
+
+    Route::middleware('auth', 'admin')->group(function () {
+        Route::put('reviews/{review}/approve', [ReviewController::class, 'approve']);
+        Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
+    });
+
 
 });
 
