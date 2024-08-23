@@ -55,12 +55,11 @@ class BookController extends Controller
      */
     public function show(Request $request)
     {
-        $book = Book::with(['author', 'category'])->find($request->id);
+        $book = Book::with(['author', 'category', 'reviews'])->find($request->id);
 
         if (!$book) {
             return response()->json(['message' => 'Book Not Found'], 404);
         }
-        $averageRating = $book->reviews()->where('approved', true)->avg('rating');
 
         $responseData = [
             'id' => $book->id,
@@ -73,9 +72,10 @@ class BookController extends Controller
             'author' => [
                 'name' => $book->author->name,
             ],
+            'reviews' => $book->reviews()->where('approved', true)->get(),
         ];
 
-        return response()->json($responseData,$averageRating);
+        return response()->json($responseData);
     }
 
     /**
