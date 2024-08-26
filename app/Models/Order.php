@@ -25,4 +25,8 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function ship(){
+        return $this->belongsTo(ShippingAddress::class);
+    }
 }

@@ -16,7 +16,6 @@ class AuthStc extends Controller
             'email'=>'required|string|email|unique:users',
             'password'=>'required|min:8',
             'status' => 'sometimes|integer|in:0,1'
-
         ]);
         $user = User::create([
             'name' => $registerUserData['name'],

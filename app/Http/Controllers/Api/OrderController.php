@@ -21,7 +21,7 @@ class OrderController extends Controller
         $user = auth()->user();
 
         // Retrieve user's cart items
-        $cartItems = Cart::where('user_id', $user->id)->with('book')->get();
+        $cartItems = Cart::where('user_id', $user->id)->with('book','ship')->get();
 
         if ($cartItems->isEmpty()) {
             return response()->json(['message' => 'Your cart is empty'], 400);
@@ -29,7 +29,7 @@ class OrderController extends Controller
 
         // Calculate total amount
         $totalAmount = $cartItems->sum(function($item) {
-            return $item->quantity * $item->book->price;
+            return ($item->quantity * $item->book->price)+$item->ship->price;
         });
 
         // Create the order
@@ -57,19 +57,38 @@ class OrderController extends Controller
     public function orderHistory()
     {
         $user = auth()->user();
-
-        // Get all orders for the authenticated user
         $orders = Order::where('user_id', $user->id)->with('orderItems.book')->get();
 
-        return response()->json($orders);
+        $filteredOrders = $orders->filter(function ($order) {
+            return $order->status == 0;
+        });
+
+        return response()->json($filteredOrders);
     }
+
     public function index()
     {
-        // Get all orders with their related user and order items
+
         $orders = Order::with('user', 'orderItems.book')->get();
 
         return response()->json($orders);
     }
+
+    public function show()
+{
+    $user = auth()->user();
+    $order = Order::with('user', 'orderItems.book')
+                ->where('user_id', $user->id)
+                ->orderByDesc('created_at')
+                ->first();
+
+    if (!$order) {
+        return response()->json(['message' => 'Order not found'], 404);
+    }
+
+    return response()->json($order);
+}
+
 
     public function updateOrderStatus(Request $request, $id)
     {

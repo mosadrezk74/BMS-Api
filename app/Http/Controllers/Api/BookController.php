@@ -36,7 +36,7 @@ class BookController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Handle image upload
+
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images', 'public');
             $validatedData['image'] = $imagePath;
@@ -122,7 +122,6 @@ class BookController extends Controller
             return response()->json(['message' => 'Book Not Found'], 404);
         }
 
-        // Delete associated image
         if ($book->image) {
             Storage::delete('public/' . $book->image);
         }
@@ -144,8 +143,6 @@ class BookController extends Controller
     public function search(Request $request)
 {
     $query = $request->input('query');
-
-    // Search by book title or author name
     $books = Book::with(['author'])
         ->where('name', 'LIKE', "%{$query}%")
         ->orWhereHas('author', function ($q) use ($query) {
@@ -157,6 +154,35 @@ class BookController extends Controller
         return response()->json(['message' => 'No books found'], 404);
     }
 
+    return response()->json($books);
+}
+
+public function filterBooks(Request $request)
+{
+    // Start with a base query
+    $query = Book::query();
+
+    // Filter by price range if provided
+    if ($request->has('min_price') && $request->has('max_price')) {
+        $query->whereBetween('price', [$request->min_price, $request->max_price]);
+    }
+
+    // Filter by category if provided
+    if ($request->has('category_id')) {
+        $query->where('category_id', $request->category_id);
+    }
+
+    // Filter by author if provided
+    if ($request->has('author_id')) {
+        $query->whereHas('author', function ($q) use ($request) {
+            $q->where('author_id', $request->author_id);
+        });
+    }
+
+    // Execute the query and get the filtered books
+    $books = $query->with(['category', 'author'])->get();
+
+    // Return the books as a JSON response
     return response()->json($books);
 }
 
