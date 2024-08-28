@@ -26,7 +26,7 @@ class PaymentController extends Controller
         try {
             // Create the charge
             $charge = Charge::create([
-                'amount' => $request->amount * 100, // amount in cents
+                'amount' => $request->amount * 100,
                 'currency' => 'usd',
                 'source' => $request->stripeToken,
                 'description' => 'Order Payment',

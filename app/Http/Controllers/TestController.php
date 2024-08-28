@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Http;
 class TestController extends Controller
 {
     public function index(){
-        $books = Book::all();
+        $products = Book::all();
         $carts=Cart::with(['book' , 'user' ])->get();
 
-        return view('index' , compact('books' , 'carts' ));
+        return view('index' , compact('products' , 'carts' ));
     }
 }

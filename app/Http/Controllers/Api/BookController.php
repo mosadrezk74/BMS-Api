@@ -94,9 +94,7 @@ class BookController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Handle image upload if a new one is provided
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
             if ($book->image) {
                 Storage::delete('public/' . $book->image);
             }
@@ -105,9 +103,7 @@ class BookController extends Controller
             $validatedData['image'] = $imagePath;
         }
 
-        // Update book details
         $book->update($validatedData);
-
         return response()->json(['message' => 'Book Updated Successfully', 'book' => $book], 200);
     }
 
@@ -159,30 +155,24 @@ class BookController extends Controller
 
 public function filterBooks(Request $request)
 {
-    // Start with a base query
     $query = Book::query();
 
-    // Filter by price range if provided
     if ($request->has('min_price') && $request->has('max_price')) {
         $query->whereBetween('price', [$request->min_price, $request->max_price]);
     }
-
-    // Filter by category if provided
+        
     if ($request->has('category_id')) {
         $query->where('category_id', $request->category_id);
     }
 
-    // Filter by author if provided
     if ($request->has('author_id')) {
         $query->whereHas('author', function ($q) use ($request) {
             $q->where('author_id', $request->author_id);
         });
     }
 
-    // Execute the query and get the filtered books
     $books = $query->with(['category', 'author'])->get();
 
-    // Return the books as a JSON response
     return response()->json($books);
 }
 

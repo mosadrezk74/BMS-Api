@@ -1,53 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Stripe Payment</title>
-    <script src="https://js.stripe.com/v3/"></script>
-</head>
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Book Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
 <body>
-    <form id="payment-form">
-        <div id="card-element"></div>
-        <div id="card-errors" role="alert"></div>
-        <button id="submit-button">Pay</button>
-    </form>
 
-    <script>
-        var stripe = Stripe('pk_test_51PppbDRqLPXFsIvt2Sz2AtOv7yFfyYmZFgicYYKGtCsnXgIWnnChthOx7Lwsa4CMBhYZMxfZnH03VNOTLQC45vNS00Tc0p33sb');
-        var elements = stripe.elements();
-        var card = elements.create('card');
-        card.mount('#card-element');
+<center>
+@foreach ($products as $product )
+    <br> 
+    <h5>{{$product->name}}</h5>
+    <p>{{$product->price}}</p>
+    <input type="hidden" name="id" value="{{$product->id}}">
+    <button class="btn btn-primary">Add To Cart</button>
 
-        card.on('change', function(event) {
-            var displayError = document.getElementById('card-errors');
-            if (event.error) {
-                displayError.textContent = event.error.message;
-            } else {
-                displayError.textContent = '';
-            }
-        });
+    <hr>
+    @endforeach
+</center>
 
-        var form = document.getElementById('payment-form');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
 
-            stripe.createToken(card).then(function(result) {
-                if (result.error) {
-                    var errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = result.error.message;
-                } else {
-                    stripeTokenHandler(result.token);
-                }
-            });
-        });
 
-        function stripeTokenHandler(token) {
-            var hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'stripeToken');
-            hiddenInput.setAttribute('value', token.id);
-            form.appendChild(hiddenInput);
-            form.submit();
-        }
-    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
