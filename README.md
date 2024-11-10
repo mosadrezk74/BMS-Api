@@ -35,7 +35,7 @@
 
       <h1>Project Endpoint </h1>
       
-      <img src="https://github.com/user-attachments/assets/8be261d1-8cd4-412b-b061-9c7b266d907b" alt="Screenshot (122)">
+<img src="https://github.com/user-attachments/assets/8be261d1-8cd4-412b-b061-9c7b266d907b" alt="Screenshot (122)">
 <img src="https://github.com/user-attachments/assets/d099c251-e985-4a55-bcd6-a76ce40bb357" alt="Screenshot (123)">
 <img src="https://github.com/user-attachments/assets/260a41f2-acac-468c-b914-8906faac5dfa" alt="Screenshot (124)">
 <img src="https://github.com/user-attachments/assets/93b5bb37-1e22-443f-aa9e-d9561b2d7605" alt="Screenshot (125)">
