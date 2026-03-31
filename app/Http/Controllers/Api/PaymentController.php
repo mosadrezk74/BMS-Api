@@ -14,13 +14,13 @@ class PaymentController extends Controller
 {
     public function processPayment(Request $request)
     {
-        // Validate the request
+         
         $request->validate([
             'amount' => 'required|numeric',
             'stripeToken' => 'required|string',
         ]);
 
-        // Set Stripe API Key
+         
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {

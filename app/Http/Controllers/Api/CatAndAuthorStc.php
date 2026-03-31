@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Author;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Category; // Assuming Category is the model for categories
+use App\Models\Category;  
 
 class CatAndAuthorStc extends Controller
 {
@@ -14,8 +14,7 @@ class CatAndAuthorStc extends Controller
      */
     public function index()
     {
-        // Retrieve all categories
-        return response()->json(Category::all(), 200);
+         return response()->json(Category::all(), 200);
     }
 
     /**
@@ -23,13 +22,11 @@ class CatAndAuthorStc extends Controller
      */
     public function store(Request $request)
     {
-        // Validate incoming request data
-        $validatedData = $request->validate([
+         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        // Create a new category
-        $category = Category::create($validatedData);
+         $category = Category::create($validatedData);
 
         return response()->json([
             'message' => 'Category Created Successfully',
@@ -42,8 +39,7 @@ class CatAndAuthorStc extends Controller
      */
     public function show(Request $request)
     {
-        // Find a specific category by its ID
-        $category = Category::find($request->id);
+         $category = Category::find($request->id);
 
         if (!$category) {
             return response()->json(['message' => 'Category Not Found'], 404);
@@ -57,20 +53,18 @@ class CatAndAuthorStc extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Find the category by ID
+         
         $category = Category::find($id);
 
         if (!$category) {
             return response()->json(['message' => 'Category Not Found'], 404);
         }
 
-        // Validate incoming request data
-        $validatedData = $request->validate([
+         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        // Update the category
-        $category->update($validatedData);
+         $category->update($validatedData);
 
         return response()->json([
             'message' => 'Category Updated Successfully',
@@ -83,14 +77,14 @@ class CatAndAuthorStc extends Controller
      */
     public function destroy($id)
     {
-        // Find the category by ID
+         
         $category = Category::find($id);
 
         if (!$category) {
             return response()->json(['message' => 'Category Not Found'], 404);
         }
 
-        // Delete the category
+         
         $category->delete();
 
         return response()->json(['message' => 'Category Deleted Successfully'], 200);

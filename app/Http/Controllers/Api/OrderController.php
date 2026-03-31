@@ -12,34 +12,34 @@ class OrderController extends Controller
 {
     public function checkout(Request $request)
     {
-        // Validate the request
+        
         $validatedData = $request->validate([
             'shipping_address' => 'required|string|max:255',
         ]);
 
-        // Get the current user
+         
         $user = auth()->user();
 
-        // Retrieve user's cart items
+         
         $cartItems = Cart::where('user_id', $user->id)->with('book','ship')->get();
 
         if ($cartItems->isEmpty()) {
             return response()->json(['message' => 'Your cart is empty'], 400);
         }
 
-        // Calculate total amount
+         
         $totalAmount = $cartItems->sum(function($item) {
             return ($item->quantity * $item->book->price)+$item->ship->price;
         });
 
-        // Create the order
+        
         $order = Order::create([
             'user_id' => $user->id,
             'shipping_address' => $validatedData['shipping_address'],
             'total_amount' => $totalAmount,
         ]);
 
-        // Create order items
+         
         foreach ($cartItems as $item) {
             OrderItem::create([
                 'order_id' => $order->id,
@@ -48,8 +48,8 @@ class OrderController extends Controller
                 'price' => $item->book->price,
             ]);
         }
-
-        // Clear the user's cart
+ 
+         
         Cart::where('user_id', $user->id)->delete();
 
         return response()->json(['message' => 'Order placed successfully', 'order_id' => $order->id]);

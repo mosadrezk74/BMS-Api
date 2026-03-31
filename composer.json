@@ -11,10 +11,14 @@
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.15",
         "laravel/tinker": "^2.8",
+        "laravel/ui": "^4.5",
+        "spatie/laravel-medialibrary": "^11.21",
+        "spatie/laravel-translatable": "^6.11",
         "stripe/stripe-php": "^15.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "kitloong/laravel-migrations-generator": "^7.0",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
@@ -32,7 +36,10 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "app/Helpers/ApiHelper.php"
+        ]
     },
     "scripts": {
         "post-autoload-dump": [
